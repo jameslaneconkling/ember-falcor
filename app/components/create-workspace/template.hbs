@@ -1,5 +1,3 @@
-<h3>Workspaces</h3>
-
 <form>
   {{input
     value=(readonly newWorkspaceName)
@@ -9,11 +7,3 @@
 
   <button {{action 'submitWorkspace'}} disabled={{disableCreateNewWorkspace}}>Create new Workspace</button>
 </form>
-
-<ul>
-  {{#each model.recentWorkspaces as |workspace|}}
-    <li>{{workspace.label}}</li>
-  {{/each}}
-</ul>
-
-{{outlet}}
