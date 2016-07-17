@@ -3,21 +3,26 @@ import FalcorComponent    from '../falcor-component/component';
 import falcor,
        {url2Path}         from '../../models/falcor';
 
-export default FalcorComponent.extend({
-  paths: [[['url', 'label', 'modified']]],
-
+const FolderItem = FalcorComponent.extend({
   actions: {
-    deleteWorkspace() {
-      let resourcePath = url2Path(this.get('model.url'));
-      let callPath = [...resourcePath, 'delete'];
+    deleteFolder() {
+      let callPath = ['foldersById', this.get('folder.id'), 'delete'];
       let args = [];
       let refSuffixes = [];
       let thisPaths = [];
 
       falcor.call(callPath, args, refSuffixes, thisPaths)
         .subscribe(() => {}, err => {
-          Ember.Logger.error('Error deleting Workspace', err);
+          Ember.Logger.error('Error deleting Folder', err);
         });
     }
   }
 });
+
+FolderItem.reopenClass({
+  queries: {
+    folder: () => [['id', 'name']]
+  }
+});
+
+export default FolderItem;

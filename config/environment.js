@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'playground',
+    modulePrefix: 'ember-falcor',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',

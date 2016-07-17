@@ -4,7 +4,7 @@ import falcor from 'falcor';
 const listener = Ember.Object.extend(Ember.Evented).create();
 
 const model = new falcor.Model({
-  source: new falcor.HttpDataSource('/api/model.json'),
+  source: new falcor.HttpDataSource('http://localhost:3000/api/model.json'),
   onChange: function() {
     console.log('onChange');
     listener.trigger('change');

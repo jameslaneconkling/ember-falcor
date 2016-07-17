@@ -1,25 +1,35 @@
-import Ember from 'ember';
+import Ember              from 'ember';
+import {modelListener}    from '../../models/falcor';
 
-export default Ember.Component.extend({
-  paths: [],
-  childPathSuffix: {},
-  childComponents: [],
-  getQueryPath() {
-    const childComponents = typeof this.get('childComponents') === 'function' ? this.get('childComponents').call(this) : this.get('childComponents');
-    const childViewsPaths = childComponents.reduce((childPaths, childName) => {
-      const component = Ember.getOwner(this).lookup(`component:${childName}`);
-
-      if (typeof component.getQueryPath === 'function') {
-        const pathsSuffix = this.get('childPathSuffix')[childName] || [];
-        const componentPaths = component.getQueryPath().map(path => [...pathsSuffix, ...path]);
-        return childPaths.concat(componentPaths);
+const FalcorComponent = Ember.Component.extend({
+  setQueryParams(params) {
+    Object.keys(params).forEach(paramName => {
+      const paramValue = params[paramName];
+      if (!this.get(`queryParams.${paramName}`)) {
+        throw new Error(`queryParam ${paramName} does not exist on component ${this}.`);
       }
-      return childPaths;
-    }, []);
+      this.set(`queryParams.${paramName}`, paramValue);
+    });
 
-    return [
-      ...this.get('paths'),
-      ...childViewsPaths
-    ];
+    modelListener.trigger('change');
+  },
+
+  getQuery(queryName) {
+    return this.constructor.getQuery(queryName);
   }
 });
+
+FalcorComponent.reopenClass({
+  getQuery(queryName) {
+    const query = this.queries[queryName];
+
+    // TODO - account for when queryParams are overwritten on the component instance
+    const queryParams = this.queryParams;
+    if (!query) {
+      throw new Error(`query ${query} does not exist on component ${this}.`);
+    }
+    return query.call(this, queryParams);
+  }
+});
+
+export default FalcorComponent

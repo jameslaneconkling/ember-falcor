@@ -1,0 +1,9 @@
+<form>
+  {{input
+    value=(readonly newFolderName)
+    placeholder="folder name..."
+    key-up=(action (mut newFolderName))
+  }}
+
+  <button {{action 'createFolder'}} disabled={{disableCreateNewFolder}}>Create new Folder</button>
+</form>

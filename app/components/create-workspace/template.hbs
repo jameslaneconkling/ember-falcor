@@ -1,9 +1,0 @@
-<form>
-  {{input
-    value=(readonly newWorkspaceName)
-    placeholder="workspace name..."
-    key-up=(action (mut newWorkspaceName))
-  }}
-
-  <button {{action 'submitWorkspace'}} disabled={{disableCreateNewWorkspace}}>Create new Workspace</button>
-</form>
