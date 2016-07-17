@@ -1,6 +1,8 @@
-{{#each-in (omit folders 'length') as |idx folder|}}
+{{#each-in folders as |idx folder|}}
   {{folder-li
     idx=idx
     folder=folder
   }}
 {{/each-in}}
+
+<button {{action 'paginate'}} disabled={{cantPaginate}}>Load More</button>

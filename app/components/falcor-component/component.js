@@ -5,10 +5,10 @@ const FalcorComponent = Ember.Component.extend({
   setQueryParams(params) {
     Object.keys(params).forEach(paramName => {
       const paramValue = params[paramName];
-      if (!this.get(`queryParams.${paramName}`)) {
+      if (!this.constructor.queryParams[paramName]) {
         throw new Error(`queryParam ${paramName} does not exist on component ${this}.`);
       }
-      this.set(`queryParams.${paramName}`, paramValue);
+      this.constructor.queryParams[paramName] = paramValue;
     });
 
     modelListener.trigger('change');
