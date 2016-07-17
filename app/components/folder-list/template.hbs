@@ -1,4 +1,4 @@
-{{#each-in folders as |idx folder|}}
+{{#each-in (omit folders 'length') as |idx folder|}}
   {{folder-li
     idx=idx
     folder=folder

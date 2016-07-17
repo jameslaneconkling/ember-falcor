@@ -20,6 +20,7 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
+  app.import('bower_components/ramda/dist/ramda.js');
   app.import('bower_components/falcor/dist/falcor.browser.js');
   app.import('vendor/shims/falcor.js');
 

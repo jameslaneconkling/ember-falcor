@@ -1,9 +1,4 @@
 (function() {
-  function vendorModule() {
-    'use strict';
-
-    return { 'default': self['falcor'] };
-  }
-
-  define('falcor', [], vendorModule);
+  define('falcor', [], () => ({ default: window.falcor }));
+  define('ramda', [], () => ({ default: window.R }));
 })();
