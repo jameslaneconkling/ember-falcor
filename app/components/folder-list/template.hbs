@@ -1,5 +1,6 @@
-{{#each folders as |folder|}}
+{{#each-in folders as |idx folder|}}
   {{folder-li
+    idx=idx
     folder=folder
   }}
-{{/each}}
+{{/each-in}}
