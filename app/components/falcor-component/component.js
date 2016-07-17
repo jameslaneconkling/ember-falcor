@@ -5,31 +5,35 @@ const FalcorComponent = Ember.Component.extend({
   setQueryParams(params) {
     Object.keys(params).forEach(paramName => {
       const paramValue = params[paramName];
-      if (!this.constructor.queryParams[paramName]) {
+      if (!this.queryParams[paramName]) {
         throw new Error(`queryParam ${paramName} does not exist on component ${this}.`);
       }
-      this.constructor.queryParams[paramName] = paramValue;
+      this.queryParams[paramName] = paramValue;
     });
 
     modelListener.trigger('change');
   },
 
-  getQuery(queryName) {
-    return this.constructor.getQuery(queryName);
-  }
-});
-
-FalcorComponent.reopenClass({
-  getQuery(queryName) {
-    const query = this.queries[queryName];
-
-    // TODO - account for when queryParams are overwritten on the component instance
-    const queryParams = this.queryParams;
-    if (!query) {
-      throw new Error(`query ${query} does not exist on component ${this}.`);
+  /**
+   * generates an array of query fragments
+   */
+  getQuery(componentClass, queryName) {
+    const childComponents = this.childViews.filter(view => view instanceof componentClass);
+    if (childComponents.length === 0) {
+      // possible to do this w/o instantiating?
+      childComponents.push(componentClass.create());
     }
-    return query.call(this, queryParams);
+
+    return childComponents
+      .filter(component => component.get(`queries.${queryName}`))
+      .map(component => {
+        const query = component.get(`queries.${queryName}`);
+        const queryParams = component.get('queryParams');
+        return query.call(component, queryParams);
+      });
   }
 });
+
+FalcorComponent.reopenClass({});
 
 export default FalcorComponent

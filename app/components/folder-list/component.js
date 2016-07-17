@@ -17,21 +17,23 @@ const FolderList = FalcorComponent.extend({
     return this.get('folders.length') >= this.get('foldersCollection.length');
   }),
 
-  actions: {
-    paginate() {
-      this.setQueryParams({folderCount: this.constructor.queryParams.folderCount + 1});
-    }
-  }
-});
-
-FolderList.reopenClass({
   queries: {
-    folders: (params) => ['folderList', {from: 1, to: params.folderCount}, ...FolderItem.getQuery('folder')]
+    folders(params) {
+      return this.getQuery(FolderItem, 'folder').map(query => {
+        return ['folderList', {from: 1, to: params.folderCount}, ...query];
+      });
+    }
   },
 
   queryParams: {
-    folderCount: 5
+    folderCount: 2
+  },
+
+  actions: {
+    paginate() {
+      this.setQueryParams({folderCount: this.queryParams.folderCount + 1});
+    }
   }
-})
+});
 
 export default FolderList;

@@ -11,23 +11,23 @@ const AppIndex = FalcorComponent.extend({
   }),
 
   hydrate() {
-    console.log(JSON.stringify(this.getQuery('folders')));
-
-    falcor.get(...this.getQuery('folders'))
+    const query = this.queries.folders.call(this);
+    console.log(JSON.stringify(query));
+    falcor.get(...query)
       .subscribe(res => {
         this.set('graph', res.json);
       }, err => {
         Ember.Logger.warn(err);
       });
-  }
-});
+  },
 
-AppIndex.reopenClass({
   queries: {
-    folders: () => [
-      FolderList.getQuery('folders'),
-      ['folderList', 'length']
-    ]
+    folders() {
+      return [
+        ...this.getQuery(FolderList, 'folders')[0],
+        ['folderList', 'length']
+      ];
+    }
   }
 });
 

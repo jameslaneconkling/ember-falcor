@@ -5,6 +5,13 @@ import falcor,
 
 const FolderItem = FalcorComponent.extend({
   tagName: 'li',
+
+  queries: {
+    folder() {
+      return [['id', 'name']];
+    }
+  },
+
   actions: {
     deleteFolder() {
       let callPath = ['foldersById', this.get('folder.id'), 'delete'];
@@ -21,9 +28,6 @@ const FolderItem = FalcorComponent.extend({
 });
 
 FolderItem.reopenClass({
-  queries: {
-    folder: () => [['id', 'name']]
-  }
 });
 
 export default FolderItem;
